@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_my_places_list, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
@@ -48,24 +48,29 @@ public class MainActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if(id == R.id.show_map_item)
+
+
+        if (id == R.id.show_map_item)
         {
-            Toast.makeText(this,"Show map",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Show Map!!!" , Toast.LENGTH_SHORT).show();
         }
-        else if(id == R.id.about_item)
+        else if (id == R.id.new_place_item)
         {
-            Intent intent = new Intent(this, About.class);
-            startActivity(intent);
+            Toast.makeText(this, "New Place!!!" , Toast.LENGTH_SHORT).show();
         }
         else if(id == R.id.my_place_list_item)
         {
-            Intent intent = new Intent(this, MyPlaceList.class);
-            startActivity(intent);
+            Intent i = new Intent(this, MyPlaceList.class);
+            startActivity(i);
+
         }
-        else if(id == R.id.new_place_item){
-            Toast.makeText(this,"New place",Toast.LENGTH_SHORT).show();
+        else if (id == R.id.about_item)
+        {
+            Intent i = new Intent(this, About.class);
+            startActivity(i);
+
         }
+
 
         return super.onOptionsItemSelected(item);
     }

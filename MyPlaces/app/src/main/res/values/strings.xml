@@ -11,7 +11,8 @@
     <string name="my_places_list"> My Places</string>
     <string name="about">About</string>
     <string name="about_text">\
-        <i>My Places </i> is the application that will help you remember characteristics and locations of your favorite places
+        <i>My Places</i>is the application that will help you remember characteristic and location of favourite places.
+        It will be able to show your places on map and enable you to share them with your friends. Each week this application will be better and better and you will earn <i>points</i> from your teaching assistant.
     </string>
     <string name="ok">OK</string>
 
