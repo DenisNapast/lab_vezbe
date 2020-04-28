@@ -1,5 +1,6 @@
 package com.example.myplaces;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -8,10 +9,13 @@ import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.ViewModelProvider;
 
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -29,23 +33,67 @@ public class MyPlaceList extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public void onClick(View v) {
+                Intent i = new Intent(MyPlaceList.this,EditMyPlaceActivity.class);
+                startActivityForResult(i, NEW_PLACE);
             }
         });
 
-        places = new ArrayList<String>();
-        places.add("Tvrdjava");
-        places.add("Cair");
-        places.add("Park Svetog Save");
-        places.add("Surdulica");
+
 
         ListView myList = (ListView) findViewById(R.id.my_places_list);
-        myList.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,places));
+        myList.setAdapter(new ArrayAdapter<MyPlaces>(this,android.R.layout.simple_list_item_1, MyPlacesData.getInstance().getMyPlaces()));
+        myList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Bundle positionBundle = new Bundle();
+                positionBundle.putInt("position", position);
+                Intent intent = new Intent ( MyPlaceList.this , ViewMyPlaceActivity.class);
+                intent.putExtras(positionBundle);
+                startActivity(intent);
+            }
+        });
+
+        myList.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
+            @Override
+            public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+                AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
+                MyPlaces place = MyPlacesData.getInstance().getIndex(info.position);
+                menu.setHeaderTitle(place.getName());
+                menu.add(0,1,1,"View place");
+                menu.add(0,2,2,"Edit place");
+
+            }
+        });
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item)
+    {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+        Bundle positionBundle = new Bundle();
+        positionBundle.putInt("position", info.position);
+        Intent i = null;
+        if(item.getItemId() == 1)
+        {
+            i = new Intent(this, ViewMyPlaceActivity.class);
+            i.putExtras(positionBundle);
+            startActivity(i);
+        }
+        else if(item.getItemId() == 2)
+        {
+            i = new Intent(this, EditMyPlaceActivity.class);
+            i.putExtras(positionBundle);
+            startActivityForResult(i,1);
+        }
+
+        return super.onContextItemSelected(item);
     }
 
 
@@ -55,6 +103,8 @@ public class MyPlaceList extends AppCompatActivity {
         return true;
     }
 
+
+    static int NEW_PLACE = 1;
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -68,15 +118,32 @@ public class MyPlaceList extends AppCompatActivity {
             Toast.makeText(this, "Show Map!!!" , Toast.LENGTH_SHORT).show();
         }
         else if (id == R.id.new_place_item) {
-            Toast.makeText(this, "New Place!!!", Toast.LENGTH_SHORT).show();
+            Intent i = new Intent(this,EditMyPlaceActivity.class);
+            startActivityForResult(i, NEW_PLACE);
         }
         else if (id == R.id.about_item)
         {
             Intent i = new Intent(this, About.class);
             startActivity(i);
 
+        }else if (id == android.R.id.home)
+        {
+            finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == Activity.RESULT_OK)
+        {
+            ListView myList = (ListView) findViewById(R.id.my_places_list);
+            myList.setAdapter(new ArrayAdapter<MyPlaces>(this,android.R.layout.simple_list_item_1, MyPlacesData.getInstance().getMyPlaces()));
+        }
+
+
     }
 
 
