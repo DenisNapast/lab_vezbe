@@ -7,6 +7,7 @@ import android.os.Bundle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -29,8 +30,8 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this,EditMyPlaceActivity.class);
-                startActivityForResult(i, NEW_PLACE);
+                Snackbar.make(v, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
             }
         });
     }
@@ -52,36 +53,31 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
 
+    if (id == R.id.show_map_item) {
+        Intent i = new Intent(this, MyPlacesMapsActivity.class);
+        i.putExtra("state", MyPlacesMapsActivity.SHOW_MAP);
+        startActivity(i);
+    } else if (id == R.id.new_place_item) {
+        Intent i = new Intent(this, EditMyPlaceActivity.class);
+        startActivityForResult(i, NEW_PLACE);
+    } else if (id == R.id.my_place_list_item) {
+        Intent i = new Intent(this, MyPlaceList.class);
+        startActivity(i);
 
-        if (id == R.id.show_map_item)
-        {
-            Intent i = new Intent(this, MyPlacesMapsActivity.class);
-            startActivity(i);
-        }
-        else if (id == R.id.new_place_item)
-        {
-            Intent i = new Intent(this,EditMyPlaceActivity.class);
-            startActivityForResult(i, NEW_PLACE);
-        }
-        else if(id == R.id.my_place_list_item)
-        {
-            Intent i = new Intent(this, MyPlaceList.class);
-            startActivity(i);
+    } else if (id == R.id.about_item) {
+        Intent i = new Intent(this, About.class);
+        startActivity(i);
 
-        }
-        else if (id == R.id.about_item)
-        {
-            Intent i = new Intent(this, About.class);
-            startActivity(i);
+    }
 
-        }
 
 
         return super.onOptionsItemSelected(item);
+
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == Activity.RESULT_OK)

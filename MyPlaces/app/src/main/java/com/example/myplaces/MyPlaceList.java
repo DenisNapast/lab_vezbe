@@ -69,6 +69,7 @@ public class MyPlaceList extends AppCompatActivity {
                 menu.add(0,1,1,"View place");
                 menu.add(0,2,2,"Edit place");
                 menu.add(0,3,3,"Delete place");
+                menu.add(0,4,4,"Show on map");
 
 
             }
@@ -98,6 +99,15 @@ public class MyPlaceList extends AppCompatActivity {
         {
             MyPlacesData.getInstance().deletePLace(info.position);
             setList();
+        }else if(item.getItemId() == 4)
+        {
+            i=new Intent(this, MyPlacesMapsActivity.class);
+            i.putExtra("state", MyPlacesMapsActivity.CENTER_PLACE_ON_MAP);
+            MyPlaces place = MyPlacesData.getInstance().getIndex(info.position);
+            i.putExtra("lat", place.getLatitude());
+            i.putExtra("lon", place.getLongitude());
+            startActivityForResult(i, 2);
+
         }
 
         return super.onContextItemSelected(item);
