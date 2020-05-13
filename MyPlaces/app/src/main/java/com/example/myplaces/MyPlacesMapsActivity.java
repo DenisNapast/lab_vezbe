@@ -1,5 +1,5 @@
-package com.example.myplaces;
 
+package com.example.myplaces;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -121,6 +121,7 @@ public class MyPlacesMapsActivity extends AppCompatActivity {
         }
         else{
             setupMap();
+            //setOnMapClickOverlay();
         }
 
 
@@ -254,6 +255,7 @@ public class MyPlacesMapsActivity extends AppCompatActivity {
             @Override
             public boolean singleTapConfirmedHelper(GeoPoint p) {
                 if(state == SELECT_COORDINATES && selCoorsEnabled) {
+                    //p = new GeoPoint(43.3209,21.8958);
                     String lon = Double.toString(p.getLongitude());
                     String lat = Double.toString(p.getLatitude());
 
@@ -261,6 +263,9 @@ public class MyPlacesMapsActivity extends AppCompatActivity {
                     locationIntent.putExtra("lon", lon);
                     locationIntent.putExtra("lat", lat);
                     setResult(Activity.RESULT_OK, locationIntent);
+
+
+
                     finish();
                 }
                 return false;
@@ -303,6 +308,7 @@ public class MyPlacesMapsActivity extends AppCompatActivity {
                     mapController.setCenter(new GeoPoint(43.3209,21.8958));
                 }
                 setOnMapClickOverlay();
+                break;
 
             case CENTER_PLACE_ON_MAP:
             default:
