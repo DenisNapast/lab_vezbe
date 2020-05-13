@@ -7,6 +7,7 @@ import android.os.Bundle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -125,11 +126,7 @@ public class EditMyPlaceActivity extends AppCompatActivity implements  View.OnCl
                     MyPlacesData.getInstance().addNewPlaces(place);
                 }
                 else {
-                    MyPlaces place = MyPlacesData.getInstance().getIndex(position);
-                    place.setName(nme);
-                    place.setDesc(desc);
-                    place.setLatitude(lat);
-                    place.setLongitude(lon);
+                     MyPlacesData.getInstance().updatePlace(position,nme,desc,lon,lat);
 
 
                 }
@@ -154,12 +151,12 @@ public class EditMyPlaceActivity extends AppCompatActivity implements  View.OnCl
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
 
         try {
-            if (requestCode == Activity.RESULT_OK) {
+            if (resultCode == Activity.RESULT_OK) {
                 String lon = data.getExtras().getString("lon");
                 EditText lonText = (EditText) findViewById(R.id.editmyplace_lon_edit);
                 lonText.setText(lon);

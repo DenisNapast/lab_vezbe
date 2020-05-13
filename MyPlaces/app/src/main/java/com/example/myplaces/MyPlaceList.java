@@ -79,6 +79,8 @@ public class MyPlaceList extends AppCompatActivity {
     @Override
     public boolean onContextItemSelected(MenuItem item)
     {
+
+
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
         Bundle positionBundle = new Bundle();
         positionBundle.putInt("position", info.position);
@@ -111,6 +113,7 @@ public class MyPlaceList extends AppCompatActivity {
         }
 
         return super.onContextItemSelected(item);
+
     }
 
     private void setList()
